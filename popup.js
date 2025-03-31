@@ -23,27 +23,22 @@ function showOverview(url, data) {
         <div class="info-section">
             <div class="info-card">
                 <div class="label">
-                    Title <span class="info-icon" title="The title tag is an HTML element that specifies the title of a web page">?</span>
+                    <span class="icon">📝</span> Title
+                    <span class="status-tag ${titleLength <= 60 ? 'success' : 'warning'}">
+                        ${titleLength} characters
+                    </span>
                 </div>
-                <div class="content-wrapper">
-                    <div class="value">${title}</div>
-                    <div class="character-count ${titleLength <= 60 ? 'success' : 'error'}">
-                        ${titleLength <= 60 ? '✓' : '✕'} ${titleLength} characters
-                    </div>
-                </div>
+                <div class="value">${title}</div>
             </div>
             
             <div class="info-card">
                 <div class="label">
-                    Description <span class="info-icon" title="Meta description provides a brief summary of the page content">?</span>
+                    <span class="icon">📄</span> Description
+                    <span class="status-tag ${metaDescription ? 'success' : 'warning'}">
+                        ${metaDescription ? metaDescription.length + ' characters' : 'Missing'}
+                    </span>
                 </div>
-                <div class="content-wrapper">
-                    <div class="value">${metaDescription || 'Description is missing'}</div>
-                    <div class="character-count ${metaDescription ? (metaDescription.length <= 160 ? 'success' : 'error') : 'error'}">
-                        ${metaDescription ? (metaDescription.length <= 160 ? '✓' : '✕') : '✕'} 
-                        ${metaDescription ? metaDescription.length : '0'} characters
-                    </div>
-                </div>
+                <div class="value">${metaDescription || 'Not specified'}</div>
             </div>
 
             <div class="info-card">

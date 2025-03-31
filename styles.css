@@ -81,11 +81,11 @@ body {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Remove these recently added styles */
-.info-icon,
+/* Remove these styles */
+.content-wrapper,
 .character-count,
 .character-count.success,
-.character-count.warning {
+.character-count.error {
     /* These styles will be removed */
 }
 
