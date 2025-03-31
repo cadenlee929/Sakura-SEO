@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "SEO Overview",
+    "name": "Sakura SEO",
     "version": "1.0",
     "description": "Displays SEO overview of the current page.",
     "permissions": ["activeTab", "scripting"],

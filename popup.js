@@ -23,22 +23,27 @@ function showOverview(url, data) {
         <div class="info-section">
             <div class="info-card">
                 <div class="label">
-                    <span class="icon">📝</span> Title
-                    <span class="status-tag ${titleLength <= 60 ? 'success' : 'warning'}">
-                        ${titleLength} characters
-                    </span>
+                    Title <span class="info-icon" title="The title tag is an HTML element that specifies the title of a web page">?</span>
                 </div>
-                <div class="value">${title}</div>
+                <div class="content-wrapper">
+                    <div class="value">${title}</div>
+                    <div class="character-count ${titleLength <= 60 ? 'success' : 'error'}">
+                        ${titleLength <= 60 ? '✓' : '✕'} ${titleLength} characters
+                    </div>
+                </div>
             </div>
             
             <div class="info-card">
                 <div class="label">
-                    <span class="icon">📄</span> Description
-                    <span class="status-tag ${metaDescription ? 'success' : 'warning'}">
-                        ${metaDescription ? metaDescription.length + ' characters' : 'Missing'}
-                    </span>
+                    Description <span class="info-icon" title="Meta description provides a brief summary of the page content">?</span>
                 </div>
-                <div class="value">${metaDescription || 'Not specified'}</div>
+                <div class="content-wrapper">
+                    <div class="value">${metaDescription || 'Description is missing'}</div>
+                    <div class="character-count ${metaDescription ? (metaDescription.length <= 160 ? 'success' : 'error') : 'error'}">
+                        ${metaDescription ? (metaDescription.length <= 160 ? '✓' : '✕') : '✕'} 
+                        ${metaDescription ? metaDescription.length : '0'} characters
+                    </div>
+                </div>
             </div>
 
             <div class="info-card">
@@ -151,10 +156,11 @@ function showHeadings(url, data) {
 
     document.getElementById('content').innerHTML = `
         <div class="info-section">
+            <h2>All headers in order of their appearance in HTML.</h2>
             <div class="heading-list">
                 ${Object.entries(data).map(([tag, info]) => `
                     ${info.texts.map(item => `
-                        <div class="heading-item">
+                        <div class="heading-item heading-${tag}">
                             <div class="label">${tag.toUpperCase()}</div>
                             <div class="value">${item.text}</div>
                         </div>
@@ -172,6 +178,28 @@ function showHeadings(url, data) {
 document.addEventListener('DOMContentLoaded', function() {
     let activeTab = 'overview';
     
+    // Add click handlers for footer links
+    const footerLinks = document.querySelectorAll('.footer-links a');
+    footerLinks[0].addEventListener('click', function(e) {
+        e.preventDefault();
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            const tab = tabs[0];
+            const url = new URL(tab.url);
+            const robotsUrl = `${url.protocol}//${url.hostname}/robots.txt`;
+            chrome.tabs.create({ url: robotsUrl });
+        });
+    });
+
+    footerLinks[1].addEventListener('click', function(e) {
+        e.preventDefault();
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            const tab = tabs[0];
+            const url = new URL(tab.url);
+            const sitemapUrl = `${url.protocol}//${url.hostname}/sitemap.xml`;
+            chrome.tabs.create({ url: sitemapUrl });
+        });
+    });
+
     // Add click handlers to nav buttons
     document.querySelectorAll('.nav-item').forEach(button => {
         button.addEventListener('click', function() {
